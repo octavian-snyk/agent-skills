@@ -8,6 +8,7 @@ Custom Codex skills tracked in git.
 - `repository-technical-analysis/`: reusable investigation-first workflow for code repositories
 - `guided-experience-service-contributor/`: repo workflow skill for guided-experience-service
 - `guided-experience-service-technical-analysis/`: investigation and analysis skill for guided-experience-service
+- `splunk-jira-ticket/`: fetch and summarize Splunk Jira or Atlassian tickets through the Jira REST API
 - `git-hooks/post-commit`: copies committed skills into `~/.codex/skills`
 
 The guided-experience-service skills are overlays. Use them with the generic skills when working in that repository.
