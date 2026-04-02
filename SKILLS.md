@@ -6,6 +6,7 @@ Skills defined in this repository:
 - `repository-technical-analysis`: reusable investigation-first workflow for code repositories
 - `guided-experience-service-contributor`: repo-specific contributor overlay for guided-experience-service
 - `guided-experience-service-technical-analysis`: repo-specific technical analysis overlay for guided-experience-service
+- `multi-spawn-agent`: reusable template for spawning parallel worker agents with disjoint ownership
 
 Skill locations:
 
@@ -13,6 +14,7 @@ Skill locations:
 - `repository-technical-analysis/SKILL.md`
 - `guided-experience-service-contributor/SKILL.md`
 - `guided-experience-service-technical-analysis/SKILL.md`
+- `multi-spawn-agent/SKILL.md`
 
 Usage notes:
 
