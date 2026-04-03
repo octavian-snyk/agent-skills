@@ -9,6 +9,7 @@ Custom Codex skills tracked in git.
 - `guided-experience-service-contributor/`: repo workflow skill for guided-experience-service
 - `guided-experience-service-technical-analysis/`: investigation and analysis skill for guided-experience-service
 - `guided-experience-service-parallel-tests/`: run guided-experience-service unit and integration tests with 10 workers
+- `guided-experience-service-mr-comment-analysis/`: fetch a guided-experience-service GitLab MR, analyze review comments, and write per-comment reports
 - `multi-spawn-agent/`: reusable template for spawning parallel worker agents with disjoint ownership
 - `splunk-jira-ticket/`: fetch and summarize Splunk Jira or Atlassian tickets through the Jira REST API
   See `splunk-jira-ticket/README.md` for shell setup and the auto-bootstrapped `jira-api` helper command.
