@@ -6,16 +6,17 @@ Custom Codex skills tracked in git.
 
 - `python-fastapi-contributor/`: reusable contributor workflow for Python and FastAPI repositories
 - `repository-technical-analysis/`: reusable investigation-first workflow for code repositories
+- `gitlab-mr-comment-analysis/`: reusable GitLab merge request comment-analysis workflow for any GitLab repository
 - `guided-experience-service-contributor/`: repo workflow skill for guided-experience-service
 - `guided-experience-service-technical-analysis/`: investigation and analysis skill for guided-experience-service
 - `guided-experience-service-parallel-tests/`: run guided-experience-service unit and integration tests with 10 workers
-- `guided-experience-service-mr-comment-analysis/`: fetch a guided-experience-service GitLab MR, analyze review comments, and write per-comment reports
+- `guided-experience-service-mr-comment-analysis/`: guided-experience-service overlay that uses `gitlab-mr-comment-analysis` plus repo-specific technical analysis and proposed changes
 - `multi-spawn-agent/`: reusable template for spawning parallel worker agents with disjoint ownership
 - `splunk-jira-ticket/`: fetch and summarize Splunk Jira or Atlassian tickets through the Jira REST API
   See `splunk-jira-ticket/README.md` for shell setup and the auto-bootstrapped `jira-api` helper command.
 - `git-hooks/post-commit`: copies committed skills into `~/.codex/skills`
 
-The guided-experience-service skills are overlays. Use them with the generic skills when working in that repository.
+The guided-experience-service skills are overlays. Use them with the matching generic skills when working in that repository.
 
 ## Install
 
