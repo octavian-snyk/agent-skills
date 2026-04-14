@@ -49,12 +49,12 @@ https://<host>/<group>/<subgroup>/<repo>/-/merge_requests/<MR>
 Example:
 
 ```text
-https://cd.splunkdev.com/guided-experience/guided-experience-service/-/merge_requests/123
+https://example.com/group/project/-/merge_requests/123
 ```
 
 Resolves to:
 
-- host: `cd.splunkdev.com`
+- host: `example.com`
 - project path: `guided-experience/guided-experience-service`
 - encoded project path: `guided-experience%2Fguided-experience-service`
 - MR IID: `123`
