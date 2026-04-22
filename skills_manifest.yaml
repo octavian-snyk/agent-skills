@@ -1,0 +1,65 @@
+shared_files:
+  - ARTIFACTS.md
+  - scripts/validate_artifact.py
+
+skills:
+  - name: branch-change-reviewer
+    path: branch-change-reviewer
+    status: stable
+  - name: git
+    path: git
+    status: stable
+  - name: git-rebase-conflict-resolver
+    path: git-rebase-conflict-resolver
+    status: stable
+  - name: gitlab
+    path: gitlab
+    status: stable
+    companion_skills:
+      - git
+      - gitlab-mr-comment-analysis
+  - name: gitlab-mr-comment-analysis
+    path: gitlab-mr-comment-analysis
+    status: stable
+    companion_skills:
+      - gitlab
+      - multi-spawn-agent
+  - name: guided-experience-service-contributor
+    path: guided-experience-service-contributor
+    status: stable
+    companion_skills:
+      - python-fastapi-contributor
+  - name: guided-experience-service-mr-comment-analysis
+    path: guided-experience-service-mr-comment-analysis
+    status: stable
+    companion_skills:
+      - gitlab
+      - gitlab-mr-comment-analysis
+      - guided-experience-service-contributor
+      - guided-experience-service-technical-analysis
+      - repository-technical-analysis
+  - name: guided-experience-service-parallel-tests
+    path: guided-experience-service-parallel-tests
+    status: stable
+    companion_skills:
+      - guided-experience-service-technical-analysis
+      - repository-technical-analysis
+  - name: guided-experience-service-technical-analysis
+    path: guided-experience-service-technical-analysis
+    status: stable
+    companion_skills:
+      - repository-technical-analysis
+  - name: jira
+    path: jira
+    status: stable
+  - name: multi-spawn-agent
+    path: multi-spawn-agent
+    status: stable
+  - name: python-fastapi-contributor
+    path: python-fastapi-contributor
+    status: stable
+    companion_skills:
+      - repository-technical-analysis
+  - name: repository-technical-analysis
+    path: repository-technical-analysis
+    status: stable
