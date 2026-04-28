@@ -5,7 +5,7 @@ description: "Use this when working in the guided-experience-service repository 
 
 # Guided Experience Service Parallel Tests
 
-Use this skill for broad test execution in `../guided-experience-service` when the goal is to run both the unit and integration suites in parallel. Prefer 2 parallel workers when subagents are available and explicitly authorized by the user, then review any failures or suspicious errors with `repository-technical-analysis` plus `guided-experience-service-technical-analysis`.
+Use this skill for broad test execution in `../../../../guided-experience-service` when the goal is to run both the unit and integration suites in parallel. Prefer 2 parallel workers when subagents are available and explicitly authorized by the user, then review any failures or suspicious errors with `repository-technical-analysis` plus `guided-experience-service-technical-analysis`.
 
 ## When to Use
 
@@ -25,14 +25,14 @@ Do not use this skill when:
 
 ## First Read
 
-- Read `../guided-experience-service/AGENTS.md` before running commands.
-- Run commands from the repository root: `../guided-experience-service`.
+- Read `../../../../guided-experience-service/AGENTS.md` before running commands.
+- Run commands from the repository root: `../../../../guided-experience-service`.
 - Use `uv` for Python commands and scripts.
 - If the user provides a local artifact such as `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md`, read it first and reuse its repo context, assumptions, validation plan, and open questions before running broad test suites.
 
 ## Workflow
 
-1. Start in `../guided-experience-service`.
+1. Start in `../../../../guided-experience-service`.
 2. Ensure dependencies are installed with `uv sync` when needed.
 3. If subagents are explicitly authorized, use 2 parallel workers:
    - Worker 1 owns unit test execution only.
@@ -72,13 +72,13 @@ Spawn 2 parallel worker agents with fork_context: true.
 
 Worker 1:
 - own unit test execution only
-- run from ../guided-experience-service
+- run from ../../../../guided-experience-service
 - run: uv run pytest -v -m "not integration and not functional" -n 10
 - return: summary, failing tests, and validation run
 
 Worker 2:
 - own integration test execution only
-- run from ../guided-experience-service
+- run from ../../../../guided-experience-service
 - fail immediately with a clear error if IAC_TOKEN is unset
 - run: make install-splunk-app-deps
 - run: uv run pytest -v -m "integration and not skip_ci" -n 10
@@ -169,7 +169,7 @@ This keeps broad test-run artifacts useful across reruns without replacing the n
 
 ## Useful Repo Anchors
 
-- `../guided-experience-service/AGENTS.md` for repo workflow rules
-- `../guided-experience-service/Makefile` for test and database helper targets
-- `../guided-experience-service/pyproject.toml` for pytest markers and dev dependencies
-- `../guided-experience-service/cicd/scripts/set_weaviate_config.sh` for production Weaviate settings
+- `../../../../guided-experience-service/AGENTS.md` for repo workflow rules
+- `../../../../guided-experience-service/Makefile` for test and database helper targets
+- `../../../../guided-experience-service/pyproject.toml` for pytest markers and dev dependencies
+- `../../../../guided-experience-service/cicd/scripts/set_weaviate_config.sh` for production Weaviate settings
