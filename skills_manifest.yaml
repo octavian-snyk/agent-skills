@@ -106,6 +106,46 @@ skills:
     release_group: guided-experience-service
     companion_skills:
       - repository-technical-analysis
+  - name: cli-contributor
+    path: skills/cli/contributor
+    status: stable
+    type: overlay
+    repo_scope: cli
+    release_group: cli
+    companion_skills:
+      - tdd
+      - diagnose
+      - repository-technical-analysis
+  - name: cli-technical-analysis
+    path: skills/cli/technical-analysis
+    status: stable
+    type: overlay
+    repo_scope: cli
+    release_group: cli
+    companion_skills:
+      - repository-technical-analysis
+  - name: cli-parallel-tests
+    path: skills/cli/parallel-tests
+    status: stable
+    type: overlay
+    repo_scope: cli
+    release_group: cli
+    companion_skills:
+      - cli-technical-analysis
+      - repository-technical-analysis
+  - name: cli-mr-comment-analysis
+    path: skills/cli/mr-comment-analysis
+    status: stable
+    type: overlay
+    repo_scope: cli
+    release_group: cli
+    companion_skills:
+      - gitlab
+      - gitlab-mr-comment-analysis
+      - cli-contributor
+      - cli-technical-analysis
+      - repository-technical-analysis
+      - multi-spawn-agent
   - name: jira
     path: skills/core/jira
     status: stable

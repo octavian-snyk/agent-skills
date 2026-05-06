@@ -1,0 +1,64 @@
+---
+name: cli-technical-analysis
+description: >-
+  Use with repository-technical-analysis when investigating the CLI product repository. Adds
+  TypeScript/JavaScript monorepo anchors, package-script-based repro commands, CI parity hints, and
+  artifact expectations. Agent- and IDE-agnostic.
+---
+
+# CLI Product Technical Analysis
+
+Use this skill as a repo-specific overlay on `repository-technical-analysis` when investigating issues in the **CLI product** source tree.
+
+## When to Use
+
+Use this skill when investigation-first work happens in the CLI repository and the user needs:
+
+- commands aligned with pnpm workspaces and Turbo when present
+- narrowing reproduction paths for CLI entrypoints, packaged binaries, or adjacent SDK surfaces
+- analysis artifacts consistent with shared schema in `ARTIFACTS.md`
+
+## When Not to Use
+
+Do not use this skill when:
+
+- the investigation target is outside the CLI product repository
+- generic `repository-technical-analysis` suffices without repo-local anchors
+- the task is only GitLab or Jira transport with no local code path
+
+## First Read
+
+- Read `AGENTS.md` and the root `README.md` or `CONTRIBUTING.md` when present.
+- Inspect `package.json` scripts to choose the smallest command that reproduces the signal.
+- Load `repository-technical-analysis` for the shared investigation structure; use this file only for this CLI repo’s specifics.
+- If `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` exists, read it first and reuse links and prior hypotheses.
+
+## Workflow
+
+1. Confirm repository root and package manager from lockfiles and `package.json`.
+2. Prefer targeted **tests** or **lint/typecheck** commands tied to the affected package path.
+3. For cross-package behavior, use Turbo filters (`turbo run … --filter=…`) when `turbo.json` exists.
+4. Capture reproduction as a **shell transcript**: cwd, exact script, exit code, and relevant log lines.
+5. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
+6. When analysis produces or extends `analysis_<name>.md`, keep durable sections such as fastest repro, known false leads, and CI gaps.
+
+## Validation
+
+- Re-run the smallest repro command after each hypothesis change when practical.
+- Align local commands with CI job names when workflows are visible under `.github/` or `.gitlab-ci.yml`.
+
+## Outputs / Artifacts
+
+May produce or enrich:
+
+- `analysis_<relevant_name>.md` following `ARTIFACTS.md`
+
+## Companion Skills
+
+- `repository-technical-analysis` (required partner)
+- `diagnose` when debugging concrete failures before broad analysis
+
+## Safety Notes
+
+- Do not exfiltrate tokens, API keys, or full credential files; refer to redacted values only.
+- Stop when reproduction requires undisclosed credentials or signing keys.
