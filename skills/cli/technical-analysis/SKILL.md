@@ -24,13 +24,13 @@ Do not use this skill when:
 
 - the investigation target is outside the CLI product repository
 - generic `repository-technical-analysis` suffices without repo-local anchors
-- the task is only GitLab or Jira transport with no local code path
+- the task is only GitLab, Jira, or CircleCI transport with no local code path
 
 ## First Read
 
 - Read `AGENTS.md` and the root `README.md` or `CONTRIBUTING.md` when present.
 - Inspect `package.json` scripts to choose the smallest command that reproduces the signal.
-- Load `repository-technical-analysis` for the shared investigation structure; use this file only for this CLI repo’s specifics.
+- Load `repository-technical-analysis` for the shared investigation structure; use `circleci` when the failure or metrics live in CircleCI. Use this file only for this CLI repo’s specifics.
 - If `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` exists, read it first and reuse links and prior hypotheses.
 
 ## Workflow
@@ -45,7 +45,7 @@ Do not use this skill when:
 ## Validation
 
 - Re-run the smallest repro command after each hypothesis change when practical.
-- Align local commands with CI job names when workflows are visible under `.github/` or `.gitlab-ci.yml`.
+- Align local commands with CI job names when workflows are visible under `.github/`, `.gitlab-ci.yml`, or when CircleCI config or API metadata names jobs and workflows.
 
 ## Outputs / Artifacts
 
@@ -56,6 +56,7 @@ May produce or enrich:
 ## Companion Skills
 
 - `repository-technical-analysis` (required partner)
+- `circleci` when investigation needs CircleCI pipeline, workflow, or job facts from the API
 - `diagnose` when debugging concrete failures before broad analysis
 
 ## Safety Notes

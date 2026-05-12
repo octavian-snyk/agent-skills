@@ -26,13 +26,13 @@ Do not use this skill when:
 
 - the task is outside the CLI product repository
 - generic `tdd` or `repository-technical-analysis` is enough and no repo-local rules apply
-- the task is pure transport (GitLab fetch only, Jira only) without local code changes
+- the task is pure transport (GitLab fetch only, Jira only, CircleCI fetch only) without local code changes
 
 ## First Read
 
 - Read `AGENTS.md` at the repository root before editing.
 - Read `package.json`, `pnpm-workspace.yaml` or `turbo.json` when present to choose commands; do not guess script names that are not declared.
-- Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Keep this skill for this CLI repo’s local rules only.
+- Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
 - If the user provides `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md`, read it first and reuse repository context, links, assumptions, and open questions.
 
 ## Repo Workflow
@@ -81,6 +81,7 @@ Layer with:
 - `tdd` for red-green-refactor implementation
 - `diagnose` for hard failures before encoding regressions
 - `repository-technical-analysis` for broader codebase reasoning
+- `circleci` for CircleCI pipeline and job context
 - `git` for branch and diff inspection
 
 ## Safety Notes
