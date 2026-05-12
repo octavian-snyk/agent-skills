@@ -1,5 +1,5 @@
 ---
-name: cli-mr-comment-analysis
+name: cli-pr-comment-analysis
 description: >-
   Analyze GitLab merge request comments for the CLI product repo by consuming grouped MR issues and
   adding repository-specific technical analysis. Use when given an MR IID or URL, pairing
@@ -7,7 +7,9 @@ description: >-
   for proposed fixes. Agent- and IDE-agnostic.
 ---
 
-# CLI Product MR Comment Analysis
+# CLI Product PR Comment Analysis
+
+Skill id uses **PR** (pull request) naming; GitLab still exposes these as **merge requests (MR)**. Upstream transport (`gitlab`, `gitlab-mr-comment-analysis`) remains MR-specific.
 
 Use this skill from the **CLI product** repository root when unresolved MR review threads need deep, code-grounded responses.
 
