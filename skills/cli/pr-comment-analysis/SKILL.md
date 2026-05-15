@@ -1,55 +1,55 @@
 ---
 name: cli-pr-comment-analysis
 description: >-
-  Analyze GitLab merge request comments for the CLI product repo by consuming grouped MR issues and
-  adding repository-specific technical analysis. Use when given an MR IID or URL, pairing
+  Analyze GitHub pull request review threads for the CLI product repo by consuming grouped PR issues
+  from `github-pr-comment-analysis` and adding repository-specific technical analysis. Use when given a PR number or URL, pairing
   repository-technical-analysis with cli-technical-analysis for each grouped issue and cli-contributor
   for proposed fixes. Agent- and IDE-agnostic.
 ---
 
 # CLI Product PR Comment Analysis
 
-Skill id uses **PR** (pull request) naming; GitLab still exposes these as **merge requests (MR)**. Upstream transport (`gitlab`, `gitlab-mr-comment-analysis`) remains MR-specific.
+GitHub hosts **pull requests (PR)**; use **`github`** for transport (`gh`, GitHub MCP, or `gh api`).
 
-Use this skill from the **CLI product** repository root when unresolved MR review threads need deep, code-grounded responses.
+Use this skill from the **CLI product** repository root when unresolved PR review threads need deep, code-grounded responses.
 
-It layers repo-specific conclusions on top of the generic GitLab MR analysis workflow (`gitlab`, `gitlab-mr-comment-analysis`).
+It layers repo-specific conclusions on top of **`github`** transport plus **`github-pr-comment-analysis`** grouped-issue scaffolding (`work_plan_pr_<PR>.md`, per-issue analysis files, stale-file hygiene).
 
 ## When to Use
 
 Use this skill when:
 
-- grouped unresolved comments exist for a merge request in this CLI repository and local code inspection is required
+- grouped unresolved comments exist for a pull request in this CLI repository and local code inspection is required
 - the user wants verdicts, risk notes, and proposed changes tied to this repository’s layout and tooling
 
 ## When Not to Use
 
 Do not use this skill when:
 
-- plain MR fetch or grouping is enough (`gitlab`, `gitlab-mr-comment-analysis` only)
+- plain PR fetch or listing comments is enough (`github` only, without grouped-comment workflow)
 - work happens outside the CLI product repository
-- no GitLab MR context exists for the request
+- no GitHub PR context exists for the request
 
 ## First Read
 
 - Read `AGENTS.md` before commands.
-- Read `gitlab` to normalize MR identity, links, and threads; read `gitlab-mr-comment-analysis` for grouped issues and scaffolds.
+- Read `github` to normalize repository identity, canonical PR number, URLs, and review or review-comment threads; read `github-pr-comment-analysis` for grouped issues and scaffolds.
 - Pair `repository-technical-analysis` with `cli-technical-analysis` for each grouped item.
 - Use `cli-contributor` to draft concrete code-level responses or patches after analysis.
-- If `review_mr_<MR>.md` or `analysis_mr_<MR>.md` exists, reuse it before repeating upstream fetch work.
+- If `review_pr_<PR>.md` or `analysis_pr_<PR>.md` exists, reuse it before repeating upstream fetch work.
 
 ## Inputs
 
 Prefer, in order:
 
-1. Artifacts already produced by `gitlab-mr-comment-analysis` (`work_plan_mr_<MR>.md`, grouped issue files)
-2. Normalized MR context from `gitlab`
-3. Raw MR IID or URL (must flow through `gitlab` then `gitlab-mr-comment-analysis` first)
+1. Artifacts already produced by `github-pr-comment-analysis` (`work_plan_pr_<PR>.md`, grouped issue files)
+2. Normalized PR context from `github`
+3. Raw PR number or URL (must flow through `github` then `github-pr-comment-analysis` when the work plan is missing)
 
 ## Workflow
 
 1. Start at the CLI product repository root.
-2. Ensure grouped issues exist; if not, run upstream `gitlab` → `gitlab-mr-comment-analysis` before local enrichment.
+2. Ensure grouped issues exist in `work_plan_pr_<PR>.md`; if not, run upstream `github` → `github-pr-comment-analysis` before local enrichment.
 3. For each grouped issue in the work plan, inspect relevant packages using `repository-technical-analysis` **and** `cli-technical-analysis` (scripts, workspace boundaries, CLI entrypoints).
 4. Add technical verdicts, risks, and prerequisites to the grouped-issue analysis Markdown using evidence from the tree.
 5. When code changes are appropriate, record proposed diffs or commands via `cli-contributor` conventions (tests-first when fixing regressions).
@@ -63,16 +63,16 @@ Prefer, in order:
 
 ## Companion Skills
 
-- `gitlab`, `gitlab-mr-comment-analysis`
+- `github`, `github-pr-comment-analysis`
 - `repository-technical-analysis`, `cli-technical-analysis`, `cli-contributor`
 - `multi-spawn-agent` only when authorized
 
 ## Safety Notes
 
-- Do not post to GitLab automatically unless the user asks; produce review-ready text instead.
+- Do not post to GitHub automatically unless the user asks; produce review-ready text instead.
 - Strip tokens from quoted API or CI snippets.
 
 ## Outputs / Artifacts
 
-- Enriched grouped-issue Markdown files produced by `gitlab-mr-comment-analysis`
+- Enriched grouped-issue Markdown files produced or anchored by `github-pr-comment-analysis` (for example `work_plan_pr_<PR>.md`, `analysis_pr_<PR>_issue_<NN>.md`, and optional `pr_<PR>_comment_report.md`)
 - Short summary of per-thread verdicts and file paths for handoff
