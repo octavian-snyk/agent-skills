@@ -37,11 +37,9 @@ Keep using `cicd/scripts/set_weaviate_config.sh` when production Weaviate settin
 
 ## Optional Artifact Input
 
-This skill can also start from a local workflow artifact such as:
+Prefer **`review_mr_<MR>.md`** (or **`analysis_mr_<MR>.md`** when that file is the working artifact) containing `## Grouped unresolved comments` with stable `### issue_*` subsections populated upstream via **`gitlab-mr-comment-analysis`**.
 
-- `review_mr_<MR>.md`
-- `analysis_mr_<MR>.md`
-- `work_plan_mr_<MR>.md`
+Legacy **`work_plan_mr_<MR>.md`** plus scattered analysis files should be merged into the main artifact by upstream grouping runs—not duplicated here.
 
 When an artifact is provided, read it first for task framing and prior assumptions, then refresh live MR context through the upstream GitLab workflows before concluding.
 Artifacts reused or updated by this skill should follow the shared schema in `../ARTIFACTS.md`.

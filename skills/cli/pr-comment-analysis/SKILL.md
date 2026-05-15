@@ -13,7 +13,7 @@ GitHub hosts **pull requests (PR)**; use **`github`** for transport (`gh`, GitHu
 
 Use this skill from the **CLI product** repository root when unresolved PR review threads need deep, code-grounded responses.
 
-It layers repo-specific conclusions on top of **`github`** transport plus **`github-pr-comment-analysis`** grouped-issue scaffolding (`work_plan_pr_<PR>.md`, per-issue analysis files, stale-file hygiene).
+It layers repo-specific conclusions on top of **`github`** transport plus **`github-pr-comment-analysis`** grouped-comment sections inside **`review_pr_<PR>.md`** (or **`analysis_pr_<PR>.md`** when that file is the session artifact).
 
 ## When to Use
 
@@ -42,19 +42,19 @@ Do not use this skill when:
 
 Prefer, in order:
 
-1. Artifacts already produced by `github-pr-comment-analysis` (`work_plan_pr_<PR>.md`, grouped issue files)
+1. Main artifact `review_pr_<PR>.md` or `analysis_pr_<PR>.md` whose `## Grouped unresolved comments` / `### issue_*` sections were produced or refreshed by `github-pr-comment-analysis`
 2. Normalized PR context from `github`
-3. Raw PR number or URL (must flow through `github` then `github-pr-comment-analysis` when the work plan is missing)
+3. Raw PR number or URL — resolve via `github`, run **`github-pr-comment-analysis`** when grouped sections are missing inside the main artifact
 
 ## Workflow
 
 1. Start at the CLI product repository root.
-2. Ensure grouped issues exist in `work_plan_pr_<PR>.md`; if not, run upstream `github` → `github-pr-comment-analysis` before local enrichment.
-3. For each grouped issue in the work plan, inspect relevant packages using `repository-technical-analysis` **and** `cli-technical-analysis` (scripts, workspace boundaries, CLI entrypoints).
-4. Add technical verdicts, risks, and prerequisites to the grouped-issue analysis Markdown using evidence from the tree.
-5. When code changes are appropriate, record proposed diffs or commands via `cli-contributor` conventions (tests-first when fixing regressions).
-6. If `multi-spawn-agent` is explicitly authorized, parallelize independent grouped issues with disjoint file ownership.
-7. Finish with a short on-screen summary plus paths to updated analysis files.
+2. Ensure `review_pr_<PR>.md` or `analysis_pr_<PR>.md` contains up-to-date grouped subsections; if not, run upstream `github` → `github-pr-comment-analysis` before enriching each `### issue_*` block.
+3. For each `### issue_*` under `## Grouped unresolved comments`, inspect relevant packages using `repository-technical-analysis` **and** `cli-technical-analysis`.
+4. Add technical verdicts, risks, and prerequisites **inside that subsection** using evidence from the tree.
+5. When code changes are appropriate, record proposed diffs or commands via `cli-contributor` conventions (tests-first when fixing regressions)—still within the same subsection unless the user directs otherwise.
+6. If `multi-spawn-agent` is explicitly authorized, parallelize independent grouped issues with **disjoint `### issue_*` subsection ownership** in the single main artifact (no parallel edits to the same subsection).
+7. Finish with a short on-screen summary plus the **single main artifact path**.
 
 ## Validation
 
@@ -74,5 +74,5 @@ Prefer, in order:
 
 ## Outputs / Artifacts
 
-- Enriched grouped-issue Markdown files produced or anchored by `github-pr-comment-analysis` (for example `work_plan_pr_<PR>.md`, `analysis_pr_<PR>_issue_<NN>.md`, and optional `pr_<PR>_comment_report.md`)
-- Short summary of per-thread verdicts and file paths for handoff
+- Enriched **`review_pr_<PR>.md`** or **`analysis_pr_<PR>.md`** (grouped subsections only), produced jointly with `github-pr-comment-analysis`
+- Short summary of per-thread verdicts and the main artifact path

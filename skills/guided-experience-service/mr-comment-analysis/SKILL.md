@@ -1,12 +1,15 @@
 ---
 name: guided-experience-service-mr-comment-analysis
-description: "Analyze guided-experience-service merge request comments by consuming grouped MR issues and adding guided-experience-service-specific technical analysis. Use when given an MR IID or URL and asked to analyze unresolved review comments in guided-experience-service, using repository-technical-analysis with guided-experience-service-technical-analysis for each grouped issue and guided-experience-service-contributor to add proposed changes."
+description: >-
+  Analyze guided-experience-service merge request comments by enriching grouped MR issues inside the
+  main MR Markdown artifact with guided-experience-service-specific technical analysis. Use when given an MR IID or URL and asked to analyze unresolved review comments in guided-experience-service,
+  using repository-technical-analysis with guided-experience-service-technical-analysis for each grouped issue subsection and guided-experience-service-contributor to add proposed changes in place.
 ---
 
 # Guided Experience Service MR Comment Analysis
 
 Use this skill from the `guided-experience-service` repository root when the user wants an MR analyzed comment-by-comment.
-This skill consumes upstream GitLab MR context and grouped issue artifacts, then enriches them with guided-experience-service-specific technical analysis, verdicts, and proposed changes.
+This skill consumes upstream GitLab MR context and **`gitlab-mr-comment-analysis`** grouped-comment layout **inside** `review_mr_<MR>.md` or `analysis_mr_<MR>.md`, then deepens each `### issue_*` subsection with service-specific technical analysis, verdicts, and proposed changes.
 
 ## When to Use
 
@@ -14,209 +17,132 @@ Use this skill when the user wants unresolved MR review comments analyzed for th
 
 - grouped issue analysis grounded in local repo code
 - guided-experience-service-specific verdicts and risks
-- proposed changes layered onto grouped issue analysis files
+- proposed changes written **into the same main MR artifact** under each issue subsection
 
 ## When Not to Use
 
 Do not use this skill when:
 
-- the task is only GitLab transport access or MR grouping; use `gitlab` or `gitlab-mr-comment-analysis`
+- the task is only GitLab transport access or generic grouping; use `gitlab` or `gitlab-mr-comment-analysis`
 - the task is outside the `guided-experience-service` repository
 - the task is general repo investigation with no grouped MR comment workflow
 
 ## First Read
 
 - Read `AGENTS.md` before running commands.
-- Read `gitlab` first to resolve normalized MR context, including MR identity, links, discussions, and thread status.
-- Read `gitlab-mr-comment-analysis` next to convert that MR context into grouped actionable unresolved issues and reporting scaffolds.
-- Treat `gitlab` and `gitlab-mr-comment-analysis` as the transport and normalization boundary. Consume their artifacts whether upstream data came from GitLab MCP or fallback `glab`.
-- Use `repository-technical-analysis` together with `guided-experience-service-technical-analysis` for the actual technical analysis.
-- After each technical analysis is complete, use `guided-experience-service-contributor` to add concrete proposed changes to the grouped-issue analysis file.
-- Use `multi-spawn-agent` only when the user has explicitly authorized subagents or parallel agent work.
+- Read `gitlab` to resolve normalized MR context (identity, links, discussions, thread status).
+- Read `gitlab-mr-comment-analysis` so grouping conventions (`## Grouped unresolved comments`, stable `### issue_*` headings) stay consistent.
+- Treat `gitlab` + `gitlab-mr-comment-analysis` as transport and grouping boundaries whether upstream used MCP or `glab`.
+- Pair `repository-technical-analysis` with `guided-experience-service-technical-analysis` for technical conclusions.
+- After technical analysis for an issue subsection, use `guided-experience-service-contributor` to add concrete proposed changes **in that subsection**.
+- Use `multi-spawn-agent` only when explicitly authorized.
 
 ## Inputs
 
 Accept, in order of preference:
 
-- grouped issue context already prepared by `gitlab-mr-comment-analysis`
-- MR context already resolved by `gitlab`
-- or a raw MR IID / MR URL, which must first be resolved through `gitlab` and then grouped through `gitlab-mr-comment-analysis`
+- `review_mr_<MR>.md` or `analysis_mr_<MR>.md` that already contains `## Grouped unresolved comments` from `gitlab-mr-comment-analysis`
+- MR context from `gitlab` when grouping sections still need refresh or creation upstream
+- raw MR IID / MR URL → resolve via `gitlab`, run **`gitlab-mr-comment-analysis`** to populate grouped sections in the main artifact before repo-specific enrichment
 
-Prefer consuming existing upstream artifacts instead of repeating GitLab fetch or grouping work locally.
-If the user provides `review_mr_<MR>.md` or `analysis_mr_<MR>.md`, treat it as preferred bootstrap context before continuing through the normal upstream GitLab analysis flow.
+If `review_mr_<MR>.md` or `analysis_mr_<MR>.md` exists, read it first, then refresh live MR state through `gitlab` before editing grouped sections.
 
 ## Companion Skills
 
-Use this skill as a repo-specific overlay on top of the upstream GitLab MR analysis workflow.
-
-Common pairings:
-
-- `gitlab` for transport, MR identity, and thread normalization
-- `gitlab-mr-comment-analysis` for grouped issue planning and reporting scaffolds
-- `repository-technical-analysis` plus `guided-experience-service-technical-analysis` for local technical conclusions
-- `guided-experience-service-contributor` for repo-specific proposed changes
-- `multi-spawn-agent` only when subagents are explicitly authorized
+- `gitlab`, `gitlab-mr-comment-analysis`
+- `repository-technical-analysis`, `guided-experience-service-technical-analysis`
+- `guided-experience-service-contributor`
+- `multi-spawn-agent` only when explicitly authorized
 
 ## Workflow
 
 1. Start in the `guided-experience-service` repository root.
-2. Check whether grouped issues are already available from `gitlab-mr-comment-analysis`.
-3. If grouped issues are not available, check whether normalized MR context is already available from `gitlab`.
-4. If only raw MR input is available, run the upstream `gitlab` → `gitlab-mr-comment-analysis` flow first.
-5. Reuse upstream artifacts without recomputing them locally, including:
-   - `mr_iid`
-   - `mr_link`
-   - project reference
-   - direct comment links
-   - actionable unresolved thread classification
-   - reply status such as `answered_waiting_for_author_feedback`
-   - stable grouped issue labels
-   - grouped comment membership
-   - analysis file paths
-   - plan history and status tracking
-   - without depending on whether upstream `gitlab` transport used GitLab MCP or fallback `glab`
-6. For each grouped issue in `work_plan_mr_<MR>.md`, use `repository-technical-analysis` plus `guided-experience-service-technical-analysis` to inspect the relevant local code, tests, and nearby modules before concluding.
-7. After the technical analysis is complete for a grouped issue, run `guided-experience-service-contributor` to add concrete proposed changes to the same analysis file.
-8. If subagents are explicitly authorized, use `multi-spawn-agent` and spawn one worker per independent grouped issue or per small disjoint set of grouped issues.
-9. If subagents are not authorized, analyze the grouped issues sequentially with the same file layout.
-10. Enrich the upstream reporting artifacts with guided-experience-service-specific verdicts, repo-specific risks, prerequisites, blockers, and recommended next actions.
-11. Finish with a concise on-screen report with 2-3 lines per analyzed grouped issue plus the path to its Markdown file.
-12. When rerunning similar MR analysis, preserve durable repo-local learned sections such as `Reviewer Preference Notes`, `Common Service Fix Patterns`, `Environment Preconditions`, and `Thread Outcome` when they still match refreshed live MR context and local code evidence.
+2. Identify the **single main artifact** (`review_mr_<MR>.md` preferred; else `analysis_mr_<MR>.md`) per `gitlab-mr-comment-analysis` rules.
+3. If grouped sections are missing, run upstream `gitlab` → `gitlab-mr-comment-analysis` to create/update `## Grouped unresolved comments` and `### issue_*` blocks **in that file**.
+4. Refresh MR threads through `gitlab`; reconcile subsection labels with live unresolved threads.
+5. For **each** `### issue_*` subsection under `## Grouped unresolved comments`, use `repository-technical-analysis` plus `guided-experience-service-technical-analysis` to inspect local code, tests, and nearby modules before concluding.
+6. After technical analysis for that subsection, run `guided-experience-service-contributor` sequentially (same worker) to append or refine **Proposed changes** (and related bullets) **inside the same subsection**.
+7. If subagents are authorized, assign disjoint `### issue_*` subsections to workers; forbid cross-editing other subsections or bootstrap headers.
+8. If subagents are not authorized, process subsections sequentially.
+9. Finish with a concise on-screen summary (2–3 lines per issue) plus **the single main artifact path**.
+10. On reruns, preserve durable repo-local bullets (`Reviewer Preference Notes`, `Common Service Fix Patterns`, `Environment Preconditions`, `Thread Outcome`) inside matching subsections when still valid.
 
 ## Worker Requirements
 
-Each grouped-issue analysis must:
+Each grouped-issue subsection must:
 
-- identify whether the comment appears valid, partially valid, outdated, or blocked by missing context
-- inspect the relevant local code, tests, and nearby modules before concluding
-- note missing prerequisites, environment gaps, or follow-up checks when they materially affect the conclusion
-- record whether you have already replied and are waiting for feedback from the comment author
-- only cover grouped issues assigned in `work_plan_mr_<MR>.md`
-- write one Markdown file per assigned grouped issue
-- after the technical analysis section is complete, use `guided-experience-service-contributor` sequentially in the same worker to add a proposed changes section to the same file
+- judge whether the comment is valid, partially valid, outdated, or blocked by missing context
+- inspect relevant local code/tests before concluding
+- note prerequisites, environment gaps, or follow-up checks when material
+- record reply/waiting status when relevant
+- expand **only** the assigned `### issue_*` region inside `## Grouped unresolved comments`
+- run `guided-experience-service-contributor` after technical analysis to deepen proposed changes inside that subsection
 
-Use this per-issue file shape:
-
-```text
-analysis_mr_<MR>_issue_<NN>.md
-```
-
-Each file should contain:
-
-1. MR and issue label
-2. MR link
-3. direct MR comment links when available
-4. reply status, including `answered_waiting_for_author_feedback` when applicable
-5. grouped comment summary
-6. affected files or modules
-7. technical analysis
-8. verdict
-9. proposed changes
-10. recommended next action
-11. confidence and open questions
-12. optional reviewer preference notes
-13. optional common service fix patterns
-14. optional environment preconditions
-15. optional thread outcome
+Do **not** create standalone `analysis_mr_<MR>_issue_<NN>.md` files for new work.
 
 ## Parallel Worker Template
 
-When subagents are allowed, use a `work_plan_mr_<MR>.md`-driven split like this:
-
 ```text
-Use gitlab-mr-comment-analysis, multi-spawn-agent, repository-technical-analysis, guided-experience-service-technical-analysis, and guided-experience-service-contributor.
+Use gitlab-mr-comment-analysis plus repository-technical-analysis, guided-experience-service-technical-analysis, guided-experience-service-contributor, and optionally multi-spawn-agent.
 
-Read work_plan_mr_<MR>.md first.
+Main artifact: review_mr_<MR>.md (or analysis_mr_<MR>.md when session-scoped).
 
-Spawn N parallel worker agents with fork_context: true, where N is based on the number of independent actionable unresolved grouped issues.
+Ensure ## Grouped unresolved comments exists with ### issue_* anchors.
 
-For each worker:
-- read work_plan_mr_<MR>.md
-- use repository-technical-analysis and guided-experience-service-technical-analysis
-- after the technical analysis is complete, use guided-experience-service-contributor sequentially in the same worker to update the same analysis file with proposed changes
-- own exactly the grouped issues assigned in `work_plan_mr_<MR>.md`
-- create the assigned analysis_mr_<MR>_issue_<NN>.md files
-- do not modify other workers' analysis files
-- return: summary, files changed, and validation run
+Spawn N workers only when authorized.
 
-After all workers finish:
-- refresh the final report using the upstream `gitlab-mr-comment-analysis` reporting scaffold
-- show a screen summary with 2-3 lines per grouped issue and the corresponding Markdown path
+Each worker:
+- edits ONLY its assigned ### issue_<label> subsection
+- runs guided-experience-service-contributor after technical analysis within that subsection
+- avoids touching sibling issue subsections or bootstrap sections
+
+After workers finish: summarize on-screen with the single artifact path.
 ```
 
 ## Boundaries
 
-- Do not run raw Git commands here for repository identity; consume the `git` skill through the upstream `gitlab` flow when needed.
-- Do not parse MR URLs directly here; consume normalized MR context from `gitlab`.
-- Do not run `glab` or `glab api` here; GitLab transport belongs to `gitlab`.
-- Do not resolve GitLab project identity here; reuse the project reference supplied upstream.
-- Do not regroup raw comments here when grouped issues already exist from `gitlab-mr-comment-analysis`.
-- Do not redefine stale-file cleanup or consolidated report scaffolding here; reuse the upstream `gitlab-mr-comment-analysis` workflow.
-- Reuse upstream MR identity, project reference, MR links, direct comment links, thread classification, reply/waiting status, grouped issue labels, and analysis file paths.
-- Do not ask the user for an MR IID or URL until after attempting the upstream `gitlab` resolution flow.
-- If MR context is still missing after that flow, then ask for the missing MR IID or URL.
+- GitLab transport stays in `gitlab`; grouping layout stays aligned with `gitlab-mr-comment-analysis`.
+- Do not duplicate raw regrouping when subsection anchors already match refreshed MR context unless upstream rerun was requested.
+- Prefer merging legacy split artifacts upstream (`gitlab-mr-comment-analysis`) before layering service-specific depth here.
 
 ## Artifact-Aware Behavior
 
-When a local workflow artifact is provided:
+When local bootstrap artifacts exist:
 
-- read it first for task framing, assumptions, and prior open questions
-- prefer upstream artifacts such as `work_plan_mr_<MR>.md` and `analysis_mr_<MR>.md` when they already exist
-- refresh live MR context through upstream `gitlab` and `gitlab-mr-comment-analysis` flows before concluding
-- preserve the shared core sections from `../ARTIFACTS.md` when enriching an existing bootstrap artifact
-
-This is additive only and does not replace the existing upstream GitLab-driven workflow.
-Keep repo-specific grouped-issue analysis and report enrichment transport-agnostic so upstream transport changes do not change local artifact contracts.
+- read first for assumptions and open questions
+- refresh MR context through `gitlab` before trusting discussion excerpts
+- preserve core sections per `../ARTIFACTS.md`
 
 ## Self-Improving Behavior
 
-When rerunning MR comment analysis for the same MR or code area:
+On reruns for the same MR:
 
-- read any existing grouped-issue analysis artifact first
-- preserve durable repo-local learned sections such as `## Reviewer Preference Notes`, `## Common Service Fix Patterns`, `## Environment Preconditions`, and `## Thread Outcome` when they still match refreshed MR context and current code evidence
-- refresh conclusions through the upstream `gitlab` and `gitlab-mr-comment-analysis` flows before reusing prior lessons
-- promote repeated confirmed observations into short repo-local heuristics, preferably phrased like `when this reviewer flags X in guided-experience-service, verify Y first`
-- demote, mark stale, or remove heuristics contradicted by updated thread state or local code evidence
-
-This keeps grouped-issue analysis artifacts useful across reruns without replacing the upstream GitLab-driven workflow.
+- read existing grouped sections first
+- preserve durable service-local heuristics when refreshed MR state + code still support them
+- refresh via upstream flows before reusing lessons
 
 ## Reporting
 
-Follow and enrich the reporting structure produced by `gitlab-mr-comment-analysis`.
-Make sure each per-issue analysis adds:
+Each `### issue_*` subsection should end up containing:
 
-- a guided-experience-service-specific technical analysis
-- a verdict grounded in local code and test inspection
-- a proposed changes section produced with `guided-experience-service-contributor`
-- any repo-specific prerequisites, environment gaps, blockers, or follow-up checks that materially affect the conclusion
+- guided-experience-service-specific technical analysis
+- verdict grounded in inspection
+- proposed changes (via contributor discipline)
+- prerequisites/blockers when relevant
 
 ## Validation
 
-- Refresh and consume upstream grouped issue context before local analysis.
-- Keep GitLab transport and grouping logic upstream; do not duplicate it here.
-- Ground verdicts in local code, test, and environment inspection.
-- Keep per-issue analysis files aligned with the stable grouped issue labels and upstream report structure.
+- Consume refreshed grouped sections before concluding.
+- Ground verdicts in code/tests/environment facts.
 
 ## Outputs / Artifacts
 
-This skill may create or enrich:
-
-- `analysis_mr_<MR>_issue_<NN>.md`
-- `mr_<MR>_comment_report.md` through the upstream reporting flow
-- `work_plan_mr_<MR>.md` indirectly through the upstream grouping workflow
-
-It should add:
-
-- guided-experience-service-specific technical analysis
-- repo-specific verdicts
-- proposed changes
-- repo-specific blockers, prerequisites, and follow-up checks
+Updates **only** the chosen main MR artifact (`review_mr_<MR>.md` or `analysis_mr_<MR>.md`), enriching grouped-issue subsections in place.
 
 ## Safety Notes
 
-- Do not duplicate GitLab transport, project resolution, or raw comment grouping logic here.
-- Use `multi-spawn-agent` only when subagents are explicitly authorized.
-- Reuse upstream artifact structure instead of inventing a parallel report contract.
+- No standalone duplicate MR artifact contracts.
+- Use `multi-spawn-agent` only when explicitly authorized.
 
 ## Useful Repo Anchors
 
