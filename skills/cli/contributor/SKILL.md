@@ -33,7 +33,7 @@ Do not use this skill when:
 - Read `AGENTS.md` at the repository root before editing.
 - Read `package.json`, `pnpm-workspace.yaml` or `turbo.json` when present to choose commands; do not guess script names that are not declared.
 - Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
-- If the user provides `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md`, read it first and reuse repository context, links, assumptions, and open questions.
+- If the user provides `_artifacts_/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` (or legacy root-level equivalents), read it first and reuse repository context, links, assumptions, and open questions.
 
 ## Repo Workflow
 
@@ -63,6 +63,7 @@ When asked to prepare an MR description:
 
 When a local workflow artifact exists:
 
+- prefer `_artifacts_/<meaningful_id>/` for new artifacts per `ARTIFACTS.md`; extend existing root-level files in place
 - read it first for durable context
 - refresh conclusions against current code and CI signals before reuse
 - preserve shared schema sections from `ARTIFACTS.md` when updating the same file
