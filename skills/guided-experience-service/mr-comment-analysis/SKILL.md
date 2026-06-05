@@ -9,7 +9,7 @@ description: >-
 # Guided Experience Service MR Comment Analysis
 
 Use this skill from the `guided-experience-service` repository root when the user wants an MR analyzed comment-by-comment.
-This skill consumes upstream GitLab MR context and **`gitlab-mr-comment-analysis`** grouped-comment layout **inside** `_artifacts_/<meaningful_id>/review_mr_<MR>.md` or `_artifacts_/<meaningful_id>/analysis_mr_<MR>.md`, then deepens each `### issue_*` subsection with service-specific technical analysis, verdicts, and proposed changes.
+This skill consumes upstream GitLab MR context and **`gitlab-mr-comment-analysis`** grouped-comment layout **inside** `$ARTIFACTS/<meaningful_id>/review_mr_<MR>.md` or `$ARTIFACTS/<meaningful_id>/analysis_mr_<MR>.md`, then deepens each `### issue_*` subsection with service-specific technical analysis, verdicts, and proposed changes.
 
 ## When to Use
 
@@ -41,11 +41,11 @@ Do not use this skill when:
 
 Accept, in order of preference:
 
-- `review_mr_<MR>.md` or `analysis_mr_<MR>.md` under `_artifacts_/<meaningful_id>/` (default `meaningful_id`: `mr-<MR>`) that already contains `## Grouped unresolved comments` from `gitlab-mr-comment-analysis`, or legacy root-level equivalents already in use
+- `review_mr_<MR>.md` or `analysis_mr_<MR>.md` under `$ARTIFACTS/<meaningful_id>/` (default `meaningful_id`: `mr-<MR>`) that already contains `## Grouped unresolved comments` from `gitlab-mr-comment-analysis`, or legacy root-level equivalents already in use
 - MR context from `gitlab` when grouping sections still need refresh or creation upstream
 - raw MR IID / MR URL → resolve via `gitlab`, run **`gitlab-mr-comment-analysis`** to populate grouped sections in the main artifact before repo-specific enrichment
 
-If `_artifacts_/…/review_mr_<MR>.md`, `_artifacts_/…/analysis_mr_<MR>.md`, or a legacy root-level equivalent exists, read it first, then refresh live MR state through `gitlab` before editing grouped sections.
+If `$ARTIFACTS/…/review_mr_<MR>.md`, `$ARTIFACTS/…/analysis_mr_<MR>.md`, or a legacy root-level equivalent exists, read it first, then refresh live MR state through `gitlab` before editing grouped sections.
 
 ## Companion Skills
 
@@ -57,14 +57,14 @@ If `_artifacts_/…/review_mr_<MR>.md`, `_artifacts_/…/analysis_mr_<MR>.md`, o
 ## Workflow
 
 1. Start in the `guided-experience-service` repository root.
-2. Identify the **single main artifact** (`_artifacts_/<meaningful_id>/review_mr_<MR>.md` preferred; else `_artifacts_/<meaningful_id>/analysis_mr_<MR>.md`, or an existing legacy root-level file) per `gitlab-mr-comment-analysis` rules.
+2. Identify the **single main artifact** (`$ARTIFACTS/<meaningful_id>/review_mr_<MR>.md` preferred; else `$ARTIFACTS/<meaningful_id>/analysis_mr_<MR>.md`, or an existing legacy root-level file) per `gitlab-mr-comment-analysis` rules.
 3. If grouped sections are missing, run upstream `gitlab` → `gitlab-mr-comment-analysis` to create/update `## Grouped unresolved comments` and `### issue_*` blocks **in that file**.
 4. Refresh MR threads through `gitlab`; reconcile subsection labels with live unresolved threads.
 5. For **each** `### issue_*` subsection under `## Grouped unresolved comments`, use `repository-technical-analysis` plus `guided-experience-service-technical-analysis` to inspect local code, tests, and nearby modules before concluding.
 6. After technical analysis for that subsection, run `guided-experience-service-contributor` sequentially (same worker) to append or refine **Proposed changes** (and related bullets) **inside the same subsection**.
 7. If subagents are authorized, assign disjoint `### issue_*` subsections to workers; forbid cross-editing other subsections or bootstrap headers.
 8. If subagents are not authorized, process subsections sequentially.
-9. Finish with a concise on-screen summary (2–3 lines per issue) plus the **full path** to the single main artifact (e.g. `_artifacts_/mr-1447/review_mr_1447.md`).
+9. Finish with a concise on-screen summary (2–3 lines per issue) plus the **full path** to the single main artifact (e.g. `$ARTIFACTS/mr-1447/review_mr_1447.md`).
 10. On reruns, preserve durable repo-local bullets (`Reviewer Preference Notes`, `Common Service Fix Patterns`, `Environment Preconditions`, `Thread Outcome`) inside matching subsections when still valid.
 
 ## Worker Requirements
@@ -85,7 +85,7 @@ Do **not** create standalone `analysis_mr_<MR>_issue_<NN>.md` files for new work
 ```text
 Use gitlab-mr-comment-analysis plus repository-technical-analysis, guided-experience-service-technical-analysis, guided-experience-service-contributor, and optionally multi-spawn-agent.
 
-Main artifact: _artifacts_/<meaningful_id>/review_mr_<MR>.md (or _artifacts_/<meaningful_id>/analysis_mr_<MR>.md when session-scoped).
+Main artifact: $ARTIFACTS/<meaningful_id>/review_mr_<MR>.md (or $ARTIFACTS/<meaningful_id>/analysis_mr_<MR>.md when session-scoped).
 
 Ensure ## Grouped unresolved comments exists with ### issue_* anchors.
 
@@ -137,7 +137,7 @@ Each `### issue_*` subsection should end up containing:
 
 ## Outputs / Artifacts
 
-Updates **only** the chosen main MR artifact under `_artifacts_/<meaningful_id>/` (`review_mr_<MR>.md` or `analysis_mr_<MR>.md`, or a legacy root-level path when already in use), enriching grouped-issue subsections in place.
+Updates **only** the chosen main MR artifact under `$ARTIFACTS/<meaningful_id>/` (`review_mr_<MR>.md` or `analysis_mr_<MR>.md`, or a legacy root-level path when already in use), enriching grouped-issue subsections in place.
 
 ## Safety Notes
 

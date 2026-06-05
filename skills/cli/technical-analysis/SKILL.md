@@ -31,7 +31,7 @@ Do not use this skill when:
 - Read `AGENTS.md` and the root `README.md` or `CONTRIBUTING.md` when present.
 - Inspect `package.json` scripts to choose the smallest command that reproduces the signal.
 - Load `repository-technical-analysis` for the shared investigation structure; use `circleci` when the failure or metrics live in CircleCI. Use this file only for this CLI repo’s specifics.
-- If `_artifacts_/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` exists (or legacy root-level equivalents), read it first and reuse links and prior hypotheses.
+- If `$ARTIFACTS/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` exists (or legacy root-level equivalents), read it first and reuse links and prior hypotheses.
 
 ## Workflow
 
@@ -40,7 +40,7 @@ Do not use this skill when:
 3. For cross-package behavior, use Turbo filters (`turbo run … --filter=…`) when `turbo.json` exists.
 4. Capture reproduction as a **shell transcript**: cwd, exact script, exit code, and relevant log lines.
 5. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
-6. When analysis produces or extends `_artifacts_/<meaningful_id>/analysis_<name>.md` (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps.
+6. When analysis produces or extends `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps.
 
 ## Validation
 
@@ -51,7 +51,7 @@ Do not use this skill when:
 
 May produce or enrich:
 
-- `_artifacts_/<meaningful_id>/analysis_<relevant_name>.md` for new artifacts (following repo `ARTIFACTS.md`; extend existing paths in place)
+- `$ARTIFACTS/<meaningful_id>/analysis_<relevant_name>.md` for new artifacts (following repo `ARTIFACTS.md`; extend existing paths in place)
 
 ## Companion Skills
 
