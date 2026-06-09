@@ -9,7 +9,7 @@ description: >-
 
 # CLI Product PR Comment Analysis
 
-GitHub hosts **pull requests (PR)**; use **`github`** for transport (`gh`, GitHub MCP, or `gh api`).
+GitHub hosts **pull requests (PR)**; use **`github`** for transport (`gh`, `gh api`, then GitHub MCP when local tools are insufficient).
 
 Use this skill from the **CLI product** repository root when unresolved PR review threads need deep, code-grounded responses.
 

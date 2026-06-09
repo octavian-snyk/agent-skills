@@ -32,7 +32,7 @@ Do not use this skill when:
 - Read `AGENTS.md` before running commands.
 - Read `gitlab` to resolve normalized MR context (identity, links, discussions, thread status).
 - Read `gitlab-mr-comment-analysis` so grouping conventions (`## Grouped unresolved comments`, stable `### issue_*` headings) stay consistent.
-- Treat `gitlab` + `gitlab-mr-comment-analysis` as transport and grouping boundaries whether upstream used MCP or `glab`.
+- Treat `gitlab` + `gitlab-mr-comment-analysis` as transport and grouping boundaries whether upstream used local `glab` or GitLab MCP.
 - Pair `repository-technical-analysis` with `guided-experience-service-technical-analysis` for technical conclusions.
 - After technical analysis for an issue subsection, use `guided-experience-service-contributor` to add concrete proposed changes **in that subsection**.
 - Use `multi-spawn-agent` only when explicitly authorized.
