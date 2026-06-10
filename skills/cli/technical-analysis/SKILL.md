@@ -30,7 +30,7 @@ Do not use this skill when:
 
 - Read `AGENTS.md` and the root `README.md` or `CONTRIBUTING.md` when present.
 - Inspect `package.json` scripts to choose the smallest command that reproduces the signal.
-- Load `repository-technical-analysis` for the shared investigation structure; use `circleci` when the failure or metrics live in CircleCI. Use this file only for this CLI repo’s specifics.
+- Load `repository-technical-analysis` for the shared investigation structure. Use `circleci` when the failure or metrics live in CircleCI. Use this file only for this CLI repo’s specifics.
 - If `$ARTIFACTS/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` exists (or legacy root-level equivalents), read it first and reuse links and prior hypotheses.
 
 ## Workflow
