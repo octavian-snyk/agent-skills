@@ -48,6 +48,7 @@ Do not use this skill when:
 
 ## Validation
 
+- When splitting disjoint suites locally, run **`scripts/check_skill_prereqs.sh parallel-tests`**. If GNU `parallel` is missing, **ask the user** to install using the **OS-appropriate** suggestion from the helper before falling back to sequential runs only.
 - Align script choice with CI workflow files when available (`.github/workflows`, `.gitlab-ci.yml`).
 - Prefer the same Node/pnpm versions CI documents (`.node-version`, `packageManager` field).
 
