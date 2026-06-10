@@ -32,7 +32,7 @@ Do not use this skill when:
 
 - Read `AGENTS.md` at the repository root before editing.
 - Read `package.json`, `pnpm-workspace.yaml` or `turbo.json` when present to choose commands; do not guess script names that are not declared.
-- Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Use **`fast-grep`** for literal symbol/string search. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
+- Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Literal search: synced **`LITERAL-CODE-SEARCH.md`**. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
 - If the user provides `$ARTIFACTS/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` (or legacy root-level equivalents), read it first and reuse repository context, links, assumptions, and open questions.
 
 ## Repo Workflow
