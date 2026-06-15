@@ -105,7 +105,7 @@ Common pairings:
 
 - `repository-technical-analysis` for the generic investigation workflow
 - `guided-experience-service-contributor` when investigation leads to approved implementation work
-- `gitlab` or `jira` when the investigation starts from remote MR or issue context
+- `gitlab` or **`JIRA-ACCESS.md`** + `acli` when the investigation starts from remote MR or issue context
 
 ## Safety Notes
 
