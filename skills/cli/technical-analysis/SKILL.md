@@ -41,11 +41,13 @@ Do not use this skill when:
 4. Capture reproduction as a **shell transcript**: cwd, exact script, exit code, and relevant log lines.
 5. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
 6. When analysis produces or extends `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps.
+7. **When the task includes approved code changes** — after validation passes, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits and debug noise, minimize the patch without changing behavior, and respect monorepo scope—do not shrink by stripping tests or cross-package fixes the investigation required. Re-run the same repro/validation if production code changes materially.
 
 ## Validation
 
 - Re-run the smallest repro command after each hypothesis change when practical.
 - Align local commands with CI job names when workflows are visible under `.github/`, `.gitlab-ci.yml`, or when CircleCI config or API metadata names jobs and workflows.
+- When the task includes approved code changes, complete workflow **step 7** (shrink the diff) after validation passes.
 
 ## Outputs / Artifacts
 

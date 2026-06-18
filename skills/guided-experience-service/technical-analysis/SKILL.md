@@ -50,6 +50,7 @@ Do not use this skill when:
 - Use `Makefile` targets when they match the task; use direct `uv run pytest ...` commands when tighter control is needed.
 - Run `make lint` after code changes are approved and implemented.
 - Run `make format` when formatting drift is introduced.
+- When the task includes approved code changes, after validation passes complete **`repository-technical-analysis`** workflow **step 10** (shrink the diff) before closing the investigation or handing off to contributor work.
 
 ## Validation
 
