@@ -42,6 +42,7 @@ Do not use this skill when:
 - For monorepos, use **Turbo** (`turbo run …`) when `turbo.json` exists and the task spans packages; scope with filters instead of running unrelated workspaces.
 - Keep changes scoped; avoid drive-by refactors across packages unless the task requires it.
 - When summarizing merge requests, compare the current branch to the remote default branch (usually `origin/main`) unless the user names another base.
+- **Before finishing**, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits, debug noise, and redundant abstractions, and minimize the patch without changing behavior; respect monorepo scope—do not shrink by stripping tests or cross-package fixes the task required. Re-run the same validation if production code changes materially.
 
 ## Validation
 
@@ -49,6 +50,7 @@ Do not use this skill when:
 - Run **tests** relevant to touched packages before finishing; use `tdd` for regression-first fixes.
 - If CI duplicates a local script name, prefer the same script locally to match CI behavior.
 - Record noisy or flaky commands once under durable sections in artifacts (see `../ARTIFACTS.md` patterns) when you find a faster reliable alternative.
+- After validation passes, complete the **Before finishing** diff-shrink step in **Repo Workflow** above.
 
 ## Merge Request Summaries
 

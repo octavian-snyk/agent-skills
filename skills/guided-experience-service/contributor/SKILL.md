@@ -44,6 +44,7 @@ Do not use this skill when:
 - Run `make format` when formatting is needed or when lint indicates formatting drift.
 - Use the pytest commands above when repo targets are too broad.
 - When a validation command proves noisy, flaky, or low-signal, record it once in `Validation Shortcuts` or `Fastest Reliable Test Targets` with the better alternative.
+- After validation passes, shrink the diff per **`python-fastapi-contributor`** workflow step 6 before finishing or preparing an MR summary.
 
 ## Environment Notes
 
