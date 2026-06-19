@@ -40,7 +40,7 @@ Do not use this skill when:
 3. For cross-package behavior, use Turbo filters (`turbo run … --filter=…`) when `turbo.json` exists.
 4. Capture reproduction as a **shell transcript**: cwd, exact script, exit code, and relevant log lines.
 5. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
-6. When analysis produces or extends `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps.
+6. When analysis produces or extends an artifact (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps. Use `$KNOWLEDGE/analysis_<name>.md` for general reference; use `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` for ticket/session work.
 7. **When the task includes approved code changes** — after validation passes, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits and debug noise, minimize the patch without changing behavior, and respect monorepo scope—do not shrink by stripping tests or cross-package fixes the investigation required. Re-run the same repro/validation if production code changes materially.
 
 ## Validation
@@ -53,7 +53,8 @@ Do not use this skill when:
 
 May produce or enrich:
 
-- `$ARTIFACTS/<meaningful_id>/analysis_<relevant_name>.md` for new artifacts (following repo `ARTIFACTS.md`; extend existing paths in place)
+- `$ARTIFACTS/<meaningful_id>/analysis_<relevant_name>.md` for ticket/session-scoped artifacts
+- `$KNOWLEDGE/analysis_<relevant_name>.md` for general knowledge reference (extend existing paths in place)
 
 ## Companion Skills
 

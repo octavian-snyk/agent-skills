@@ -36,7 +36,7 @@ Do not use this skill when:
 - For broad reproduction, start with `uv run pytest -v -m "not integration and not functional" -n 10` and `uv run pytest -v -m "integration and not skip_ci" -n 10`.
 - For narrower reproduction, use the smallest `uv run pytest ...` command that still reproduces the issue.
 - When the analysis depends on production Weaviate behavior, source `cicd/scripts/set_weaviate_config.sh` first.
-- Create `analysis_<relevant_name>.md`, `analysis_<relevant_name>_slides.html`, and `analysis_<relevant_name>_slides_notes.md` when the investigation requires a written artifact or presentation.
+- Create analysis artifacts under `$KNOWLEDGE/` for general reference or `$ARTIFACTS/<meaningful_id>/` for ticket/session work: `analysis_<relevant_name>.md`, and when needed `analysis_<relevant_name>_slides.html` and `analysis_<relevant_name>_slides_notes.md`.
 - When rerunning similar analysis, preserve durable repo-local learned sections such as `Known Failure Modes`, `Weaviate Pitfalls`, `Fastest Reliable Repro`, and `Next-Time Checks` when they still match current evidence.
 
 ## Repo Investigation Rules
@@ -76,7 +76,7 @@ This is additive only and does not replace the normal `repository-technical-anal
 
 ## Outputs / Artifacts
 
-This skill may produce or enrich:
+This skill may produce or enrich (under `$KNOWLEDGE/` for general reference, else `$ARTIFACTS/<meaningful_id>/` for ticket/session work):
 
 - `analysis_<relevant_name>.md`
 - `analysis_<relevant_name>_slides.html`
