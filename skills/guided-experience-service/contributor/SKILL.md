@@ -1,6 +1,6 @@
 ---
 name: guided-experience-service-contributor
-description: Use this with python-fastapi-contributor when working in the guided-experience-service repository. Adds repo-specific uv usage, lint and format commands, pytest commands, optional Weaviate setup, and merge request summary rules against origin/main.
+description: Use this with python-fastapi-contributor when working in the guided-experience-service repository. Adds repo-specific uv usage, lint and format commands, pytest commands, optional Weaviate setup, merge request summary rules against origin/main, and reinforces testable design (dependency injection, no hidden globals).
 ---
 
 # Guided Experience Service Contributor
@@ -30,6 +30,15 @@ Do not use this skill when:
 - Use `uv` for Python commands and scripts.
 - Load `python-fastapi-contributor` for the general workflow and validation loop. Keep this skill focused on repo-local rules.
 - If the user provides a local artifact such as `task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md`, read it first and reuse its repository, links, assumptions, plan, and open questions before inspecting code.
+
+## Design principles
+
+Follow **`python-fastapi-contributor`** and repo **`AGENTS.md`** (**Contributor design principles**):
+
+- inject Weaviate clients, HTTP adapters, and settings — do not add module-level clients or read env vars inside handlers/services
+- route and service tests should use fakes or test containers already used in the repo before adding integration-only coverage
+- when touching existing singletons or `lru_cache` config helpers, prefer passing explicit deps into the code under change
+- for new behavior or regressions, pair with **`tdd`**: red-green-refactor on public interfaces using injected fakes
 
 ## Repo Workflow
 

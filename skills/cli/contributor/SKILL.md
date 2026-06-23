@@ -3,8 +3,8 @@ name: cli-contributor
 description: >-
   Use with tdd and repository-technical-analysis when implementing changes in the CLI product
   repository. Adds repo-local TypeScript/JavaScript monorepo conventions, package-script-first
-  validation, merge request summaries against the default branch, and layout anchors. Agent- and
-  IDE-agnostic.
+  merge request summaries against the default branch, layout anchors, and testable design (dependency
+  injection, no hidden globals). Agent- and IDE-agnostic.
 ---
 
 # CLI Product Contributor
@@ -34,6 +34,16 @@ Do not use this skill when:
 - Read `package.json`, `pnpm-workspace.yaml` or `turbo.json` when present to choose commands; do not guess script names that are not declared.
 - Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Literal search: synced **`LITERAL-CODE-SEARCH.md`**. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
 - If the user provides `$ARTIFACTS/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` (or legacy root-level equivalents), read it first and reuse repository context, links, assumptions, and open questions.
+
+## Design principles
+
+Testability is a **primary objective** (see **Contributor design principles** in repo `AGENTS.md`):
+
+- **Inject dependencies** — pass collaborators via constructor args, function parameters, or explicit factory/context objects; avoid `import { singleton }` from deep inside logic.
+- **Avoid globals** — no module-level mutable caches, registries, or config reads at import time; wire dependencies at CLI entrypoints, command handlers, or test setup.
+- **Side effects at the edge** — keep parsing, orchestration, and I/O in thin layers; core logic should accept interfaces/types you can fake in Jest/Vitest (or the repo’s test runner).
+- **Tests first-class** — prefer injecting test doubles over sprawling `vi.mock`/`jest.mock` trees; new behavior should be coverable with package-scoped tests.
+- For new behavior or regressions, pair with **`tdd`**: red-green-refactor on public interfaces using injected fakes.
 
 ## Repo Workflow
 
