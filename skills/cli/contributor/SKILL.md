@@ -3,8 +3,9 @@ name: cli-contributor
 description: >-
   Use with tdd and repository-technical-analysis when implementing changes in the CLI product
   repository. Adds repo-local TypeScript/JavaScript monorepo conventions, package-script-first
-  merge request summaries against the default branch, layout anchors, and testable design (dependency
-  injection, no hidden globals). Agent- and IDE-agnostic.
+  merge request summaries against the default branch, layout anchors, testable design (dependency
+  injection, no hidden globals), and optional Slack MCP context when configured. Agent- and
+  IDE-agnostic except Slack supplement (Cursor Slack plugin).
 ---
 
 # CLI Product Contributor
@@ -33,6 +34,7 @@ Do not use this skill when:
 - Read `AGENTS.md` at the repository root before editing.
 - Read `package.json`, `pnpm-workspace.yaml` or `turbo.json` when present to choose commands; do not guess script names that are not declared.
 - Load `tdd` for test-first flow and `repository-technical-analysis` for investigation framing. Literal search: synced **`LITERAL-CODE-SEARCH.md`**. Use `circleci` when pipeline or job status from CircleCI is needed for fixes or MR notes. Keep this skill for this CLI repo’s local rules only.
+- When ticket, MR, or design context is missing from artifacts and Jira/GitHub, see **Slack context** below if the **Cursor Slack plugin** (`https://mcp.slack.com/mcp`) is connected.
 - If the user provides `$ARTIFACTS/<meaningful_id>/task_<issue>.md`, `review_mr_<MR>.md`, or `analysis_mr_<MR>.md` (or legacy root-level equivalents), read it first and reuse repository context, links, assumptions, and open questions.
 
 ## Design principles
@@ -54,6 +56,27 @@ Testability is a **primary objective** (see **Contributor design principles** in
 - When summarizing merge requests, compare the current branch to the remote default branch (usually `origin/main`) unless the user names another base.
 - **Before finishing**, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits, debug noise, and redundant abstractions, and minimize the patch without changing behavior; respect monorepo scope—do not shrink by stripping tests or cross-package fixes the task required. Re-run the same validation if production code changes materially.
 
+## Slack context
+
+Optional supplement when **Slack MCP tools** are available (Cursor **Settings → MCP** or marketplace Slack plugin connected). Use **after** local code, artifacts, Jira, and GitHub — not instead of them. Pair with **`cli-technical-analysis`** for deeper investigation-style Slack search.
+
+**Skip** when the task is fully specified in code and artifacts, or when MCP is missing or auth fails — state which and continue.
+
+**Contributor use cases:**
+
+- reviewer or teammate guidance in threads (approach, naming, rollout constraints)
+- design decisions or “ship / hold” discussion not captured in Jira or the MR
+- incident or hotfix threads that justify scope, risk, or follow-up in the MR summary
+- repro or customer-impact notes from team channels when shaping tests or fix scope
+
+**Tool ladder** (same Slack MCP server as `cli-technical-analysis`):
+
+1. **`slack_search_users`** — resolve email or display name to `USER_ID` when the task names a person.
+2. **`slack_search_public_and_private`** — search by Jira key (`CLI-####`), MR/PR ref, branch name, or `from:<@USER_ID>` (`limit` 10–20, `sort` `timestamp`, `sort_dir` `desc`, `include_context` `true`).
+3. **`slack_read_thread`** — read threads behind promising hits for review feedback or rollout notes.
+
+Prefer search over channel history. Redact secrets; cite channel + date + short snippet in MR notes or artifacts — do not paste tokens or customer data.
+
 ## Validation
 
 - After substantive edits, run **lint** and **typecheck** scripts when the repo defines them.
@@ -69,7 +92,7 @@ When asked to prepare an MR description:
 1. Inspect committed changes on the current branch against the agreed base (`origin/main` unless stated).
 2. If `.gitlab/merge_request_templates/` exists, start from the appropriate template and fill every section.
 3. Summarize what changed and why in engineer-oriented language; link issues or tickets when known.
-4. Call out risk, rollout notes, and follow-up work only when grounded in the diff or discussion.
+4. Call out risk, rollout notes, and follow-up work only when grounded in the diff or discussion — including **Slack context** when MCP search found relevant threads and the takeaway is confirmed against the change set.
 
 ## Artifact-Aware Behavior
 
@@ -94,10 +117,13 @@ Layer with:
 - `tdd` for red-green-refactor implementation
 - `diagnose` for hard failures before encoding regressions
 - `repository-technical-analysis` for broader codebase reasoning
+- `cli-technical-analysis` for investigation-style Slack search and repro-oriented queries
 - `circleci` for CircleCI pipeline and job context
 - `git` for branch and diff inspection
+- **Cursor Slack plugin** (optional) — **Slack context** section; MCP last, after local and bundled transport per `AGENTS.md`
 
 ## Safety Notes
 
 - Do not invent package scripts; always confirm in `package.json` or workspace docs.
 - Stop and ask when auth, tokens, or signing are required but missing.
+- Slack MCP requires workspace admin approval and OAuth; if tools are missing or auth fails, proceed without Slack — do not ask the user to paste full Slack exports unless they offer.
