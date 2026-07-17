@@ -1,0 +1,4 @@
+interface:
+  display_name: "CLI Branch Change Reviewer"
+  short_description: "Review CLI branches with terse grounded findings"
+  default_prompt: "Use $cli-branch-change-reviewer to review the current CLI branch against origin/main with CLI-specific analysis and terse actionable findings."
