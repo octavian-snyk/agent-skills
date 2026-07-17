@@ -148,6 +148,17 @@ skills:
       - diagnose
       - repository-technical-analysis
       - circleci
+  - name: cli-caretaker
+    path: skills/cli/cli-caretaker
+    status: stable
+    type: overlay
+    repo_scope: cli
+    release_group: cli
+    companion_skills:
+      - confluence
+      - circleci
+      - cli-branch-change-reviewer
+      - cli-technical-analysis
   - name: cli-technical-analysis
     path: skills/cli/technical-analysis
     status: stable

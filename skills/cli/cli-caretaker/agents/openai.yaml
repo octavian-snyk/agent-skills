@@ -1,0 +1,4 @@
+interface:
+  display_name: "CLI Ask Caretaker"
+  short_description: "Research CLI asks and advise actions"
+  default_prompt: "Use $cli-caretaker to research the CLI Ask Caretaker queue, include relevant Datadog evidence, and write a read-only report with advised actions; exclude On Caller duties."
