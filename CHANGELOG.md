@@ -17,6 +17,8 @@ Use commit history for routine wording, cleanup, and implementation-only changes
 
 ### Changed
 
+- **`cli-caretaker`** — include read-only questions mentioning Slack user group
+  `@ask-cli-caretaker` (`S075HU4SREC`) in caretaker research and reports.
 - **`branch-change-reviewer`** — require output under the resolved external
   `$ARTIFACTS` store by default.
 - **`cli-branch-change-reviewer`** — add a separate `ponytail-review` pass for

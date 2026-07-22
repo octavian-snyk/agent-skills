@@ -1,6 +1,6 @@
 ---
 name: cli-caretaker
-description: Research a CLI Ask Caretaker shift and write an evidence-backed report with advised actions for the CLI Ask queue, support triage, Datadog signals, alerts, main-branch CI failures, redirected requests, and PR asks. Use when the user asks for CLI caretaker analysis, Ask or support triage, a caretaker report or handoff, or advice on whether an item should be answered, escalated, converted, reviewed, or closed. Exclude the separate On Caller role and on-call incident work. Keep Jira, Slack, GitHub, CircleCI, and Datadog interactions read-only unless the user explicitly requests a specific external action.
+description: Research a CLI Ask Caretaker shift and write an evidence-backed report with advised actions for the CLI Ask queue, questions mentioning the Slack user group `@ask-cli-caretaker` (`S075HU4SREC`), support triage, Datadog signals, alerts, main-branch CI failures, redirected requests, and PR asks. Use when the user asks for CLI caretaker analysis, Ask or support triage, a caretaker report or handoff, or advice on whether an item should be answered, escalated, converted, reviewed, or closed. Exclude the separate On Caller role and on-call incident work. Keep Jira, Slack, GitHub, CircleCI, and Datadog interactions read-only unless the user explicitly requests a specific external action.
 ---
 
 # CLI Ask Caretaker
@@ -40,6 +40,7 @@ investigation after initial triage.
   and the `Triage Status` section of the
   [CLI Support Dashboard](https://snyksec.atlassian.net/jira/dashboards/10913).
 - Use Jira transport per `JIRA-ACCESS.md`. Use connected Slack tools for
+  questions mentioning `@ask-cli-caretaker` (user group `S075HU4SREC`) and for
   `#ask-cli`, `#cli-alerts`, and `#hammerhead-alerts` when available.
 - Use the connected Datadog app and its skill guides for relevant observability
   evidence when available.
@@ -58,6 +59,9 @@ investigation after initial triage.
 
 1. Research current work through read-only access:
    - every Ask in the Asks swimlane outside `Done`
+   - every visible question in the shift window mentioning
+     `@ask-cli-caretaker` or user group ID `S075HU4SREC`; read its parent and
+     thread, then deduplicate it against tracked Ask and Jira items
    - new support requests in dashboard `Triage Status`
    - relevant CLI and Hammerhead alerts
    - CI/CD failures on `main` in the
@@ -118,6 +122,8 @@ investigation after initial triage.
 ## Validation
 
 - Cover every visible non-Done Ask and new support-triage item.
+- Cover every visible `@ask-cli-caretaker` (`S075HU4SREC`) question in the
+  shift window, or state the Slack coverage gap.
 - Record the decision branch for source type, CLI ownership, feature/bug type,
   customer origin, and Critical priority when applicable.
 - Keep work over 30 minutes out of the Ask queue.
@@ -147,6 +153,9 @@ share-ready caretaker handoff. Clearly separate observed state from advice.
 
 ## Companion Skills
 
+- Use `slack` read-only to find `@ask-cli-caretaker` questions and inspect their
+  threads. Use `slack-outgoing-message` only after an explicit Slack write
+  request.
 - Use `confluence` to refresh the support guidance.
 - Use `circleci` read-only for `main` pipeline checks in `gh/snyk/cli`.
 - Use `cli-branch-change-reviewer` read-only for PR asks requiring code review;
