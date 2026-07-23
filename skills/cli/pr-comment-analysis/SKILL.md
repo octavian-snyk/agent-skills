@@ -103,3 +103,6 @@ Record in the relevant `### issue_*` subsection: query used, channel + date + on
 
 - Enriched main artifact under `$ARTIFACTS/<meaningful_id>/` (grouped subsections only), produced jointly with `github-pr-comment-analysis`; legacy root-level paths when already the working file
 - Short summary of per-thread verdicts and the artifact’s full path
+- At the top of the main artifact, state `Analysis date: YYYY-MM-DD` and
+  `Analyzed commit: <full PR head SHA>` from normalized PR context; do not use
+  the local checkout SHA unless it matches the PR head.

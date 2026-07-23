@@ -66,6 +66,11 @@ May produce or enrich:
 - `$ARTIFACTS/<meaningful_id>/analysis_<relevant_name>.md` for ticket/session-scoped artifacts
 - `$KNOWLEDGE/analysis_<relevant_name>.md` for general knowledge reference (extend existing paths in place)
 
+At the top of every analysis artifact or report, state:
+
+- `Analysis date: YYYY-MM-DD`
+- `Analyzed commit: <full git SHA>` from `git rev-parse HEAD`
+
 ## Companion Skills
 
 - `repository-technical-analysis` (required partner)

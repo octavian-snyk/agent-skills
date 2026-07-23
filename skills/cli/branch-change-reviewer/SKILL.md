@@ -62,7 +62,9 @@ replace evidence.
 
 ## Outputs / Artifacts
 
-Use the base screen output and review artifact unchanged.
+Use the base screen output and review artifact. At the top of each report,
+state `Analysis date: YYYY-MM-DD` and `Analyzed commit: <full git SHA>` for the
+reviewed branch HEAD.
 
 ## Companion Skills
 
