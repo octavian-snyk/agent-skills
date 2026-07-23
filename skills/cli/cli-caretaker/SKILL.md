@@ -68,6 +68,7 @@ investigation after initial triage.
      [snyk/cli CircleCI pipelines](https://app.circleci.com/pipelines/gh/snyk/cli),
      using `circleci` read-only
    - requests redirected to the team outside `#ask-cli`
+   - when acceptance tests fail, advise whether `TEST_SNYK_IGNORE_LIST`, as documented in CLI `CONTRIBUTING.md`, can selectively unblock an out-of-scope spec; do not recommend it for a CLI-owned regression
 2. For alerts, CI failures, errors, or performance symptoms with observable
    signals, research Datadog read-only:
    - list Datadog skill guides, then load the best matching guide before using

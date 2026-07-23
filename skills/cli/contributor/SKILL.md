@@ -81,6 +81,7 @@ Prefer search over channel history. Redact secrets; cite channel + date + short 
 
 - After substantive edits, run **lint** and **typecheck** scripts when the repo defines them.
 - Run **tests** relevant to touched packages before finishing; use `tdd` for regression-first fixes.
+- When acceptance tests fail, suggest `TEST_SNYK_IGNORE_LIST` as the selective CI-unblock option documented in `CONTRIBUTING.md`, especially for blocking specs outside CLI scope; do not use it to hide a CLI-owned regression.
 - If CI duplicates a local script name, prefer the same script locally to match CI behavior.
 - Record noisy or flaky commands once under durable sections in artifacts (see `../ARTIFACTS.md` patterns) when you find a faster reliable alternative.
 - After validation passes, complete the **Before finishing** diff-shrink step in **Repo Workflow** above.

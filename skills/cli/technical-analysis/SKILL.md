@@ -41,21 +41,22 @@ Do not use this skill when:
 2. Prefer targeted **tests** or **lint/typecheck** commands tied to the affected package path.
 3. For cross-package behavior, use Turbo filters (`turbo run … --filter=…`) when `turbo.json` exists.
 4. Capture reproduction as a **shell transcript**: cwd, exact script, exit code, and relevant log lines.
-5. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
-6. When analysis produces or extends an artifact (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps. Use `$KNOWLEDGE/analysis_<name>.md` for general reference; use `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` for ticket/session work.
-7. **Optional Slack context** — when repo-local evidence is insufficient and Slack MCP tools are available (Cursor **Settings → MCP** or marketplace Slack plugin connected):
+5. When acceptance tests fail, suggest `TEST_SNYK_IGNORE_LIST` as the selective CI-unblock option documented in `CONTRIBUTING.md`, especially for blocking specs outside CLI scope; do not use it to hide a CLI-owned regression.
+6. When behavior depends on **installed or project-level CLI configuration**, follow the product’s documented paths and precedence; never paste secrets into artifacts or chat output.
+7. When analysis produces or extends an artifact (see repo `ARTIFACTS.md`), keep durable sections such as fastest repro, known false leads, and CI gaps. Use `$KNOWLEDGE/analysis_<name>.md` for general reference; use `$ARTIFACTS/<meaningful_id>/analysis_<name>.md` for ticket/session work.
+8. **Optional Slack context** — when repo-local evidence is insufficient and Slack MCP tools are available (Cursor **Settings → MCP** or marketplace Slack plugin connected):
    - Prefer **search** over broad channel history: Jira/GitHub keys (`CLI-####`, `pr-####`), error strings, subsystem names, incident ids, or named teammates from the task.
    - Resolve people with user search when the task names an email or display name; scope message search with `from:<@USER_ID>` when useful.
    - Read **threads** for reproduction steps, rollout timing, config changes, or prior fixes; cite channel + thread date + short snippet in the artifact.
    - Do **not** use Slack when local repro already explains the failure, when the user did not imply team/incident context, or when MCP is unavailable — say which case applies and continue without it.
    - Redact tokens, customer data, and credential values from artifacts and chat; link to Slack messages instead of pasting secrets.
-8. **When the task includes approved code changes** — after validation passes, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits and debug noise, minimize the patch without changing behavior, and respect monorepo scope—do not shrink by stripping tests or cross-package fixes the investigation required. Re-run the same repro/validation if production code changes materially.
+9. **When the task includes approved code changes** — after validation passes, shrink the diff: review the full change set (`git diff`), drop out-of-scope edits and debug noise, minimize the patch without changing behavior, and respect monorepo scope—do not shrink by stripping tests or cross-package fixes the investigation required. Re-run the same repro/validation if production code changes materially.
 
 ## Validation
 
 - Re-run the smallest repro command after each hypothesis change when practical.
 - Align local commands with CI job names when workflows are visible under `.github/`, `.gitlab-ci.yml`, or when CircleCI config or API metadata names jobs and workflows.
-- When the task includes approved code changes, complete workflow **step 8** (shrink the diff) after validation passes.
+- When the task includes approved code changes, complete workflow **step 9** (shrink the diff) after validation passes.
 - When Slack MCP was used, note search queries and whether conclusions from Slack are confirmed vs speculative alongside repo evidence.
 
 ## Outputs / Artifacts
