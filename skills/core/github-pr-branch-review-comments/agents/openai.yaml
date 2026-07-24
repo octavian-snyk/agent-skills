@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR Branch Review Comments"
+  short_description: "Draft Conventional Comments from branch review findings."
+  default_prompt: "Use $github-pr-branch-review-comments. With a PR number/URL: fetch threads (github-pr-comment-analysis, reviewer mode), run branch-change-reviewer on the PR diff, dedupe against author replies, draft Conventional Comments, and give a Review verdict. Without a PR: branch-only mode on the current branch vs origin/main — branch-change-reviewer then draft comments and verdict only. Do not post to GitHub."
